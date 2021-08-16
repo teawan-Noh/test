@@ -5,7 +5,7 @@ public class Point {
 	int y;
 	
 	public Point() {}
-	public Point(int x, int y) {
+	public Point(int x, int yddd) {
 		this.x = x;
 		this.y = y;
 	}
