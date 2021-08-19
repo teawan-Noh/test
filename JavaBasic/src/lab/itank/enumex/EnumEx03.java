@@ -12,11 +12,39 @@ public class EnumEx03 {
 			this.name = name;
 			this.term = term;
 		}
+
+		public String getName() {
+			return name;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		public String getTerm() {
+			return term;
+		}
+
+		public void setTerm(String term) {
+			this.term = term;
+		}
+		
+		
 	}
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+		
+		Season[] seasonArray = Season.values();
+		
+		for (Season season : seasonArray) {
+			System.out.println(season);
+		}
+		
+		System.out.println(Season.SPRING.getName());
+		System.out.println(Season.SPRING.getTerm());
+		
+		Season.SPRING.setName("º½º½º½");
+		System.out.println(Season.SPRING.getName());
 	}
 
 }
