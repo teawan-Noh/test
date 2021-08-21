@@ -1,4 +1,4 @@
-package lab.itank;
+package lab.itank2;
 
 import java.util.Random;
 

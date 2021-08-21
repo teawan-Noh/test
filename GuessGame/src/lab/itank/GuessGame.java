@@ -1,35 +1,28 @@
 package lab.itank;
 
 public class GuessGame {
-	
+
 	Player player;
-	
-	public void startGame() {
-		
-		RandomManager m1 = new RandomManager();
-		int randomNumber = m1.getRandomNumber();
-		
-		Player p1 = new Player();
-		int count = 1;
-		int i = 1;
-		p1.guess();
-		while(i < 4) {
-			int playerNum = p1.getNumber();
-			if(randomNumber == playerNum) {
-				System.out.println(count + "번만에 맞추셨습니다");
+
+	public void startGame(Player player) {
+		System.out.println("GuessGame을 시작합니다 \n예측하신 번호를 입력해주세요.");
+
+		int randomNumber = RandomManager.getRandomNumber();
+		for (int i = 0; i < 3; i++) {
+			player.guess();
+			if (randomNumber == player.getNumber()) {
+				System.out.println((i + 1) + "번만에 맞추셨습니다");
+				System.out.println("=============================");
 				break;
-			}
+			} 
 			else {
 				System.out.println("틀리셨습니다");
-				i++;
-				if(i == 4) {
-					System.out.println("3번의 기회를 모두 날리셨군요");
-					break;
+				System.out.println("=============================");
+				if (i == 2) {
+					System.out.println("3번의 기회를 모두 사용하셨습니다 \n게임을 종료합니다.");
 				}
-				count += 1;
-				p1.guess();
 			}
 		}
+		player.sc.close();
 	}
 }
-
