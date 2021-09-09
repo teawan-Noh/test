@@ -1,4 +1,5 @@
-﻿import java.io.*;
+﻿package chating;
+import java.io.*;
 import java.net.*;
 import java.util.*;
 import javax.swing.*;
@@ -11,13 +12,15 @@ public class Client{
 	BufferedReader reader;
 	PrintWriter writer;
 	Socket sock;
+	OutputStream outputStream;
+	InputStream inputStream;
 
-	public static void main(String[] args){
+	public static void main(String[] args) throws UnknownHostException, IOException{
 		Client client = new Client();
 		client.init();
 	}
 	
-	public void init(){
+	public void init() throws UnknownHostException, IOException{
 		JFrame frame = new JFrame("Chat Client");
 		JPanel mainPanel = new JPanel();
 		in = new JTextArea(15,30);
@@ -40,20 +43,38 @@ public class Client{
 		frame.setSize(400,350);
 		frame.setVisible(true);
 	}
-	private void networking(){
+	private void networking() throws UnknownHostException, IOException{
 		//소켓생성
+		sock = new Socket("192.168.35.5", 5000);
 		//읽어들이는 라인 생성
+		this.inputStream = sock.getInputStream();
 		//쓰는 라인 생성
+		this.outputStream = sock.getOutputStream();
 	}
 	public class SendButtonListener implements ActionListener{
 		public void actionPerformed(ActionEvent ev){
 			//작성한 내용 보내기
+			writer = new PrintWriter(outputStream, true);
+			writer.println(out.getText());
+			out.setText("");
+			out.requestFocus();
 		}
 	}
 	public class InDataReader implements Runnable{
 		public void run(){
 			//서버가 보낸 내용 읽어
 			//화면에 추가하기
+			reader = new BufferedReader(new InputStreamReader(inputStream));
+			String text;
+			try {
+				while(true) {
+					text = reader.readLine();
+					in.append(text + "\n");
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
 		}
 	}
 }

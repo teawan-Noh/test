@@ -2,24 +2,24 @@ package lab.itank.thread;
 
 public class BankAccountJob implements Runnable{ //implements Runnable 사용하는걸 권장
 
-	private BankAccount account = new BankAccount();
+	private BankAccount customer = new BankAccount();
 	
 	@Override
 	public void run() {
 		for(int i = 0; i < 10; i++) {
 			makeWithdraw(10);
 			
-			if(account.getBalance() < 0) {
+			if(customer.getBalance() < 0) {
 				System.out.println("마이너스야!!");
 			}
 		}
 	}
 	//synchronized : 어떤 스레드가 먼저 들어와있으면 다른 스레드는 들어올 수 없다
 	public synchronized void makeWithdraw(int amount) { 
-		if(account.getBalance() >= amount) {
+		if(customer.getBalance() >= amount) {
 
 			System.out.println(Thread.currentThread().getName()+"잔액조회완료");
-			account.withdraw(amount);
+			customer.withdraw(amount);
 			System.out.println(Thread.currentThread().getName()+"인출 완료");
 		}
 		else {
