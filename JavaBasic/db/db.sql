@@ -17,13 +17,10 @@ select ename, sal*12+nvl(comm, 0) 연봉 from emp;
 --컬럼명에 공백을 포함하고 싶으면 ""사용
 select ename, sal*12+nvl(comm, 0) "연 봉" from emp;
 
-
 INSERT INTO EMP VALUES
 (7788,'SCOTT','ANALYST',7566,to_date('13-7-1987','dd-mm-yyyy'),3000,NULL,20);
 INSERT INTO EMP VALUES
 (7876,'ADAMS','CLERK',7788,to_date('13-7-1987','dd-mm-yyyy'),1100,NULL,20);
-
-select * from EMP;
 
 --중복 데이터 한번만 출력하기(distinct)
 --select * from dept;
@@ -70,7 +67,7 @@ select * from emp where hiredate between '1982/01/01' and '1982/12/31';
 --in 연산자(or를 나열하는 것보다 간편하게 사용 가능)
 --상여가 300이거나 500인 사원 검색
 select * from emp where comm in (300, 500);
---상여가 300이거나 500이 아닌 사원(null 포함 안됨)
+--상여가 300이나 500이 아닌 사원(null 포함 안됨)
 select * from emp where comm not in (300, 500); 
 --null 포함해서 검색하는 방법(상여가 있으면 그 값 조회, 없으면 0으로 생각해서 조회)
 select * from emp where nvl(comm, 0) not in (300, 500);
@@ -155,7 +152,7 @@ select ename from emp where ename like '%A%' and ename like '%E%';
   -- $1600, $950 또는 $1300이 아닌 사원의 이름, 담당업무, 급여를 출력하시오.
 select ename, job, sal from emp where job in('CLERK', 'SALESMAN') and sal not in (1600, 950, 1300);
 
---15.커미션이 $500 이상인 사원의 이름과 급여 및 커미션을 출력하시오.
+--15 
 select ename, comm from emp where comm >= 500;
 ------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------
@@ -329,7 +326,7 @@ select * from emp where substr(hiredate, 5, 1) = 4;
 select * from emp where mod(empno, 2) = 0;
 
 --4.입사일을 연도는 2자리(YY), 월은 숫자(MON)로 표시하고 요일은 약어(DY)로 지정하여 출력
-select ename, hiredate, to_char(hiredate, 'YY/MON/DY') as 연월, to_char(hiredate, 'DAY') as DY from emp;
+select ename, hiredate, to_char(hiredate, 'YY/MON/DY') as 연월 from emp;
 
 --5.현재 날짜를 이용하여 올해 며칠이 지났는지 출력
 select trunc(sysdate) - trunc(sysdate, 'YEAR') as day from dual;
@@ -421,7 +418,7 @@ select job, count(*)
 from emp
 group by job;
 
---4.관리자 수를 나열. 칼럼의 별칭은 아래와 같이 지정하시오.
+--4.직업별 관리자 수를 나열. 칼럼의 별칭은 아래와 같이 지정하시오.
 --	COUNT(MANAGER)
 select count(mgr) as "COUNT(MANAGER)"
 from emp
@@ -453,12 +450,21 @@ group by deptno
 --8.문제오류로 제외
 
 --9.업무를 표시한 다음 해당 업무에 대해 부서번호별 급여 및 부서 10,20,30의 급여 총액을 각각 출력  --요거 틀림 다시 풀기
-select distinct(job), (select deptno from emp where deptno = 10)
+select job, deptno, sum(sal), count(*)
 from emp
-group by job, deptno
+group by deptno, job
 order by job
 
-select * from emp order by job;
+select job, deptno, sum(sal), count(*), decode(deptno, 10, sum(sal), 20, sum(sal), 30,sum(sal))
+from emp
+group by deptno, job
+order by job
+
+select job, deptno, sum(sal), count(*), decode(deptno, 10, sum(sal)), decode(deptno, 20, sum(sal)), decode(deptno, 30, sum(sal))
+from emp
+group by deptno, job
+order by job
+
 ------------------------------------------------------------------------------------------------------------------
 --조인
 select * from emp;
@@ -1413,6 +1419,115 @@ WITH CHECK OPTION;
 --3.생성된 뷰를 제거하시오.
 DROP VIEW V_EMP3
 
+------------------------------------------------------------------------------------------------------
+--[시퀀스]
+1.테이블 내의 유일한 숫자를 자동으로 생성
+주로 기본키가 유일한 값을 갖도록 사용자가 직접 값을 생성해내는 부담감을 줄일 수 있다.
+
+2.시퀀스 만들기
+create sequence seq_toyid;
+
+select * from toys;
+
+3.다음 시퀀스 값
+select seq_toyid.nextval from dual;
+
+insert into toys values (seq_toyid.nextval, '뱅뱅뱅')
+insert into toys values (seq_toyid.nextval, '라디오')
+
+
+drop sequence seq_toyid;
+
+create sequence seq_toyid;
+
+select seq_toyid.nextval from dual;
+
+4.현재 시퀀스 값
+--select seq_toyid.currval from dual; --세션때문에 sql comment에서만 가능 (검은창)
+
+--[인데스]
+1.탐색 속도를 높이기 위해 사용
+2.탐색키가 꼭 유일키 또는 후보키일 필요는 없다.
+
+3.인덱스 생성
+create index ename_idx on emp (ename);
+
+4.인덱스 생성 확인
+select INDEX_NAME, TABLE_NAME, COLUMN_NAME
+from USER_IND_COLUMNS
+where TABLE_NAME in ('EMP');
+
+5.인덱스 선정 지침
+1)기본키 (자동으로 만들어줌)
+2)외래키 후보 
+3)자주 갱신되는 컬럼은 인덱스로 정의하지 않는 것이 좋다. 
+4)후보키 후보
+5)자주 갱신되는 테이블 인덱스로 정의하지 않는 것이 좋다.
+
+6.검색속도 높이려면
+distinct 사용 최소화
+group by, having 사용 최소화 
+
+7.인덱스 삭제 
+drop index ename_idx;
+
+--------------------------------------------------------------------------------------------
+--quiz
+--0.emp의 구조만 가져와 emp01 테이블을 생성
+create table emp01
+as
+select *
+from emp
+where 0 = 1;
+
+--1.사원 테이블의 사원번호가 자동으로 생성되도록 시퀀스 생성
+create sequence seq_empno
+
+select seq_empno.nextval from dual;
+
+--2.사원번호를 시퀀스로부터 발급
+insert into emp01 values (seq_empno.nextval, '홍길동', '영업', 1423, '1999/09/09', 400, 40, 10);
+select *from emp01;
+select TABLE_NAME, CONSTRAINT_NAME FROM USER_CONSTRAINTS WHERE TABLE_NAME = 'emp01';
+
+--3.EMP01 테이블의 이름 칼럼을 인덱스로 설정하되 인덱스 이름을 IDX_EMP01_ENAME으로 지정
+create index IDX_EMP01_ENAME on EMP01 (ename);
+
+select INDEX_NAME, TABLE_NAME, COLUMN_NAME
+from USER_IND_COLUMNS
+where TABLE_NAME in ('EMP');
+
+drop index IDX_EMP01_ENAME;
+
+--[권한]
+1.새 사용자 추가 - 관리자 계정으로 접속
+2.시스템 권한을 받아야 접근 가능 : create SESSION, CREATE TABLE, CREATE SEQUENCE, CREATE VIEW;
+GRANT CREATE TABLE, CREATE SEQUENCE, CREATE VIEW to young;
+--시스템 권한은 관리자가 주고 테이블 접근 권한은 만든사람이 줄 수 있다 
+3.객체 권한 : insert, update, delete, select, alter...
+
+--[요구사항] 
+-young 계정을 만들어 주세요
+-young 계정에게 접속 권한을 주세요.
+-scott 계정의 emp 테이블의 모든 권한을 young에게 주세요.
+-scott 계정의 emp 테이블의 선택 권한을 사용자 모두에게 주세요.
+
+4.권한 취소
+REVOKE select ON EMP FROM young;
+
+--[role]
+1.create role manager;
+2.grant create session, create table to manager;
+3.grant manager to young;
+
+--[동의어: SYNONYM]
+grant create synonym to young;
+
+create synonym emp for scott.emp;
+---------------------------------------------------------------
+1.sbs 라는 사용자 생성(암호는 pass)
+2.기본적인 권한 부여를 하지 않으면 데이터베이스에 로그인이 불가능하므로
+  connection, resource 권한을 sbs 사용자에게 부여
 
 
 
