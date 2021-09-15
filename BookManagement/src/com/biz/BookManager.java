@@ -17,7 +17,10 @@ import com.view.Message;
 public class BookManager {
 	// 더이상 객체 변수 선언하지 마시오.
 	InputValueReader reader = new InputValueReader();
+	
 	BookDataAccessDao dao = new ArrayListBookDataAccessDaoImpl();
+	//디비연결 
+//	BookDataAccessDao dao = new OracleBookDataAccessDaoImpl();
 
 	public void start() throws IOException {
 		while (true) {

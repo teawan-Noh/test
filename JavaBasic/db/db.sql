@@ -1,3 +1,42 @@
+select * from emp;
+
+select deptno, dname, loc from dept where deptno = 10;
+select deptno, dname, loc from dept where deptno = ?;
+
+select * from emp where empno = 8888;
+
+update dept set dname = ?, loc = ? WHERE deptno = ?;
+
+delete from dept where deptno = ?;
+
+create table customer(
+
+	SEQ NUMBER(10) primary key,
+	ID VARCHAR2(10),
+	NAME VARCHAR2(10),
+	PASSWORD NUMBER(4),
+	ADDRESS VARCHAR2(20),
+	PHONE VARCHAR2(13)
+);
+
+create sequence seq_seq;
+select seq_seq.nextval from dual;
+DROP TABLE customer
+select * from EMP
+
+update customer set name = '고길동' where seq = 1;
+
+
+insert into customer (seq, id, name, password, address, phone) 
+values (seq_seq.nextval, '스마', '길동', 1235, '경기도 평택', '123-4528-1112');
+
+
+CREATE TABLE DEPARTMENT(
+	DNO NUMBER(2),
+	DNAME VARCHAR2(14),
+	LOC VARCHAR2(13)
+);
+
 --전체 사원의 모든 칼럼 조회
 select * from EMP;
 
@@ -451,11 +490,6 @@ group by deptno
 
 --9.업무를 표시한 다음 해당 업무에 대해 부서번호별 급여 및 부서 10,20,30의 급여 총액을 각각 출력  --요거 틀림 다시 풀기
 select job, deptno, sum(sal), count(*)
-from emp
-group by deptno, job
-order by job
-
-select job, deptno, sum(sal), count(*), decode(deptno, 10, sum(sal), 20, sum(sal), 30,sum(sal))
 from emp
 group by deptno, job
 order by job
@@ -1434,7 +1468,7 @@ select seq_toyid.nextval from dual;
 
 insert into toys values (seq_toyid.nextval, '뱅뱅뱅')
 insert into toys values (seq_toyid.nextval, '라디오')
-
+select * from toys
 
 drop sequence seq_toyid;
 
