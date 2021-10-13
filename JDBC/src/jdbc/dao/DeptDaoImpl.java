@@ -119,7 +119,6 @@ public class DeptDaoImpl implements DeptDao {
 	@Override
 	public Dept selectByDeptno(int deptno) {
 		Dept dept = null;
-		
 		Connection connection = null;
 		PreparedStatement pStatement = null;
 		ResultSet resultSet = null;
@@ -132,12 +131,10 @@ public class DeptDaoImpl implements DeptDao {
 			resultSet = pStatement.executeQuery();
 			
 			if(resultSet.next()) {
-//				Dept dept = new Dept();
+				dept = new Dept();
 				dept.setDeptno(resultSet.getInt("deptno"));
 				dept.setDname(resultSet.getString("dname"));
 				dept.setLoc(resultSet.getString("loc"));
-				
-				
 			}
 			
 		} catch (Exception e) {

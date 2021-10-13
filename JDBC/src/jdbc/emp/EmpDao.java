@@ -14,5 +14,5 @@ public interface EmpDao {
 	List<Emp> selectAll();
 	Emp selectByEmpno(int empno);
 	
-	
+	void transaction(int sal01, int sal02);
 }

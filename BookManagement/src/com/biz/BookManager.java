@@ -7,6 +7,8 @@ import java.util.Map;
 
 import com.dao.ArrayListBookDataAccessDaoImpl;
 import com.dao.BookDataAccessDao;
+import com.dao.OracleBookDataAccessDaoImpl;
+import com.db.JDBCUtil;
 import com.dto.Book;
 import com.view.FormatWriter;
 import com.view.InputValueReader;
@@ -18,11 +20,14 @@ public class BookManager {
 	// 더이상 객체 변수 선언하지 마시오.
 	InputValueReader reader = new InputValueReader();
 	
-	BookDataAccessDao dao = new ArrayListBookDataAccessDaoImpl();
+//	BookDataAccessDao dao = new ArrayListBookDataAccessDaoImpl();
 	//디비연결 
-//	BookDataAccessDao dao = new OracleBookDataAccessDaoImpl();
+	BookDataAccessDao dao = new OracleBookDataAccessDaoImpl();
 
 	public void start() throws IOException {
+		//필요한건지 확인
+//		ArrayList<Book> bookList = null;
+		
 		while (true) {
 			FormatWriter.showMenu(Menu.MENU01);
 			FormatWriter.showMessage(Message.MESSAGE09);
@@ -59,22 +64,34 @@ public class BookManager {
 				}
 				break;
 			case 2:// 검색
-				ArrayList<Book> serchedbookList = new ArrayList<Book>();
-				serchedbookList.clear();
+				ArrayList<Book> serchedbookList = null;
 				Map<Integer, String> updateContent = new HashMap<Integer, String>();
-				updateContent.clear();
+				Book book = null;
 				
 				FormatWriter.showMessage(Message.MESSAGE03);
-				String serchValue = reader.readStringValue();
-				serchedbookList = dao.searchBook(serchValue, serchedbookList);
-				if (serchedbookList != null) {
+				String searchValue = reader.readStringValue();
+				try {
+					serchedbookList = dao.searchBookByName(searchValue);
+					FormatWriter.showBookList(serchedbookList);
+				}
+				catch (NullPointerException e) {
+					FormatWriter.showMessage(Message.MESSAGE19);
+					continue;
+				}
+				if (!serchedbookList.isEmpty()) {
 					while (true) {
 						FormatWriter.showMenu(Menu.MENU03);
 						FormatWriter.showMessage(Message.MESSAGE09);
 						int selectMenu2 = reader.readIntValue();
 						switch (selectMenu2) {
 						case 1:// 수정
-							int selectBookNo = selectBook(serchedbookList);
+							FormatWriter.showMessage(Message.MESSAGE10);
+							int selectBookNo = reader.readIntValue();
+							book = dao.selectByNo(selectBookNo);
+							if(book == null) {
+								FormatWriter.showMessage(Message.MESSAGE19);
+								continue;
+							}
 							while (true) {
 								FormatWriter.showMenu(Menu.MENU04);
 								FormatWriter.showMessage(Message.MESSAGE13);
@@ -108,7 +125,13 @@ public class BookManager {
 							FormatWriter.showMessage(Message.MESSAGE06);
 							break;
 						case 2:// 삭제
-							int selectBookNo2 = selectBook(serchedbookList);
+							FormatWriter.showMessage(Message.MESSAGE10);
+							int selectBookNo2 = reader.readIntValue();
+							book = dao.selectByNo(selectBookNo2);
+							if(book == null) {
+								FormatWriter.showMessage(Message.MESSAGE19);
+								continue;
+							}
 							while (true) {
 								FormatWriter.showMessage(Message.MESSAGE07);
 								FormatWriter.showMenu(Menu.MENU02);
@@ -144,9 +167,11 @@ public class BookManager {
 				else {
 					FormatWriter.showMessage(Message.MESSAGE19);
 				}
+				
 				break;
 			case 3:// 전체출력
-				dao.selectAll();
+				serchedbookList = dao.selectAll();
+				FormatWriter.showBookList(serchedbookList);
 				break;
 			case 4:// 종료
 				askExit();
@@ -189,20 +214,6 @@ public class BookManager {
 				return false;
 			default:
 				FormatWriter.showMessage(Message.MESSAGE16);
-				continue;
-			}
-		}
-	}
-
-	public int selectBook(ArrayList<Book> serchedbookList) throws IOException {
-		Book book;
-		while (true) {
-			FormatWriter.showMessage(Message.MESSAGE10);
-			int selectBookNo = reader.readIntValue();
-			book = dao.selectByNo(selectBookNo, serchedbookList);
-			if (book != null) {
-				return selectBookNo;
-			} else {
 				continue;
 			}
 		}

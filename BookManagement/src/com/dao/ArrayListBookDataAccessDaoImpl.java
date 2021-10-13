@@ -18,13 +18,13 @@ public class ArrayListBookDataAccessDaoImpl implements BookDataAccessDao{
 
 	@Override
 	public ArrayList<Book> selectAll() {
-		FormatWriter.showBookList(bookList);
-		return null;
+		
+		return bookList;
 	}
 
 	@Override
-	public Book selectByNo(int no, ArrayList<Book> serchedbookList) {
-		for (Book book : serchedbookList) {
+	public Book selectByNo(int no) {
+		for (Book book : bookList) {
 			if(Integer.toString(book.getNo()).equals(Integer.toString(no))) {
 			
 				return book;
@@ -32,7 +32,7 @@ public class ArrayListBookDataAccessDaoImpl implements BookDataAccessDao{
 		}
 		return null;
 	}
-
+	
 	@Override
 	public boolean updateBook(int bookNo, Map<Integer, String> updateContent) {
 		for(int i = 0; i < bookList.size(); i++) {
@@ -65,12 +65,11 @@ public class ArrayListBookDataAccessDaoImpl implements BookDataAccessDao{
 	}
 
 	@Override
-	public ArrayList<Book> searchBook(String subName, ArrayList<Book> serchedbookList) {
+	public ArrayList<Book> searchBookByName(String subName) {
 		int count = 0;
-		ArrayList<Book> searchedBookList = serchedbookList;
+		ArrayList<Book> searchedBookList = new ArrayList<Book>();
 		for (Book book : bookList) {
-			if(book.getName().contains(subName) || book.getAuthor().contains(subName) || book.getPublisher().contains(subName)) {
-				FormatWriter.showBookList(book);
+			if(book.getName().contains(subName)) {
 				searchedBookList.add(book);
 				count += 1;
 			}

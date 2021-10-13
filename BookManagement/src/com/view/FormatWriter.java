@@ -29,13 +29,4 @@ public class FormatWriter {
 			System.out.println("================================");
 		}
 	}
-	public static void showBookList(Book b){
-		
-		System.out.println("================================");
-		System.out.println("책번호 : "+b.getNo());
-		System.out.println("책제목 : "+b.getName());
-		System.out.println("저  자 : "+b.getAuthor());
-		System.out.println("출판사 : "+b.getPublisher());
-		System.out.println("================================");
-	}
 }

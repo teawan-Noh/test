@@ -1,4 +1,43 @@
-select * from emp;
+--데이터 타입 확인하는법
+select * 
+from ALL_TAB_COLUMNS
+where TABLE_NAME = 'CUSTOMER' ;
+DROP table customer
+
+create table customer(
+	customerseq Number,
+	id varchar2(50) primary key,
+	name varchar2(50) not null,
+	password varchar2(50) not null,
+	postcode varchar2(50),
+	address varchar2(150),
+	address2 varchar2(150),
+	phone varchar2(50),
+	email varchar2(50)
+);
+insert into customer values (customerseq.nextval, 'bbq', '홍길동', '1234', '12331', '가나다라', '마바사', '010-2222-2222', '이메일');
+
+select * from tab;
+create table dept as
+select * from scott.dept;
+
+select * from customer where customerseq = 3;
+
+select * from dept;
+delete from dept where deptno not in(10,20,30);
+update dept set dname = '재무팀' where deptno = '30';
+
+create sequence customerseq;
+
+insert into customer values(customerseq.nextval, 'bbq', '홍길동', '1234', '790812', '아현로 어딘가', '가길 2층', '010-2949-3949', 'bbq@gmail.com');
+
+select count(*) as cnt from CUSTOMER where id=?;
+
+
+
+
+update emp set sal = 0;
+update emp set sal = ? where deptno = ?;
 
 select deptno, dname, loc from dept where deptno = 10;
 select deptno, dname, loc from dept where deptno = ?;
@@ -11,16 +50,85 @@ delete from dept where deptno = ?;
 
 create table customer(
 
-	SEQ NUMBER(10) primary key,
-	ID VARCHAR2(10),
-	NAME VARCHAR2(10),
-	PASSWORD NUMBER(4),
-	ADDRESS VARCHAR2(20),
-	PHONE VARCHAR2(13)
+	CUSTOMERID NUMBER primary key,
+	NAME VARCHAR2(40),
+	ADDRESS VARCHAR2(40),
+	PHONE VARCHAR2(30)
 );
 
-create sequence seq_seq;
-select seq_seq.nextval from dual;
+select * from customer;
+insert into customer values (1010, 'tami', '서울 중구', '010-0000-0000');
+
+select * from customer where customerid = 1010;
+update customer set phone = '010-1111-1111' where customerid = 1010;
+delete from customer where customerid = 1010;
+
+create table Publisher(
+	publishername varchar2(40) CONSTRAINT Publisher_publishername_PK primary key,
+	contactanme varchar2(40),
+	phone varchar2(30)
+);
+
+create table Book(
+	bookid number CONSTRAINT Book_bookid_PK primary key,
+	bookname varchar2(40),
+	price number,
+	publishername varchar2(40) CONSTRAINT Book_publishername_FK references Publisher(publishername)
+);
+
+insert into publisher values ('구디출판사', '홍길동', '010-1234-1234');
+
+select * from book
+select * from publisher
+
+insert into book values (seq_bookid.nextval, 'java', 5000, '구디출판사');
+
+select TABLE_NAME, CONSTRAINT_NAME FROM USER_CONSTRAINTS WHERE TABLE_NAME = 'Book';
+select TABLE_NAME, CONSTRAINT_NAME FROM USER_CONSTRAINTS WHERE TABLE_NAME = 'publisher';
+
+CREATE VIEW V_book as
+select * from book
+where price between 5000 and 10000;
+
+
+8. 도서이름에 JAVA를 포함한 책 정보와 출판사 정보를 모두 검색하시오. 
+
+  (단, 도서이름은 대소문자를 구분하지 않고 모두 검색되어야 한다. 즉, JAVA, java, Java, java 등을 포함한 책 모두 검색되어야 한다.)
+  
+select * from book where lower(bookname) like '%java%';
+
+drop table book;
+
+
+select * from memo;
+
+select * from memo;
+delete from memo where name is not null;
+create sequence memoseq;
+select memoseq.nextval from dual;
+insert into memo values(memoseq.nextval, '카다도가미', 10);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+create sequence seq_bookid;
+select seq_bookid.nextval from dual;
 DROP TABLE customer
 select * from EMP
 
@@ -1564,5 +1672,11 @@ create synonym emp for scott.emp;
   connection, resource 권한을 sbs 사용자에게 부여
 
 
+drop table book;
 
-
+create table book(
+	no number primary key,
+	name varchar2(30),
+	author varchar2(30),
+	publisher varchar2(30)
+)

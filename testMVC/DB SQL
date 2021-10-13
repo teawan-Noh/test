@@ -1,0 +1,28 @@
+select * from emp;
+select * from emp where hiredate between TO_DATE('2021-10-06', 'YYYY-MM-DD') AND TO_DATE('2021-10-06', 'YYYY-MM-DD')+0.99999 order by empno desc ;
+
+drop table emp;
+drop table dept;
+
+create table dept(
+	DEPTNO NUMBER(4) primary key,
+	DNAME VARCHAR(50),
+	LOC VARCHAR(40)
+);
+
+insert into dept values (10, '°³¹ßÆÀ', 'NEW YORK');
+insert into dept values (20, 'ÀÎ»çÆÀ', 'SEOUL');
+insert into dept values (30, 'Àç¹«ÆÀ', 'CHICAGO');
+
+create table emp(
+	empno number(4) primary key,
+	ename varchar(50) not null,
+	job varchar(30),
+	hiredate date not null,
+	sal number not null,
+	deptno number(4) not null CONSTRAINT EMP_DEPTNO_FK references dept(deptno) 
+);
+
+create sequence seq_empno;
+drop sequence seq_empno;
+

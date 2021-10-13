@@ -18,7 +18,6 @@ public class InputValueReader{
 			intValue = Integer.parseInt(in.readLine());
 		}
 		catch (NumberFormatException e1){
-			System.out.println("문자금지");
 		}
 
 		return intValue;

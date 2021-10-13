@@ -34,7 +34,7 @@ public class Test {
 		//selectByDeptno
 		dept = deptDao.selectByDeptno(10);
 		
-		dept.toString();
+		System.out.println(dept.toString());
 		
 	}
 
