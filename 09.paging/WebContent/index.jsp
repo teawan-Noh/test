@@ -8,7 +8,8 @@
 <title>Insert title here</title>
 </head>
 <body>
-<a href="memo_search">메모리스트</a>
-
+<div>
+	<a href="memo_search?reqPage=1">메모리스트</a>
+</div>
 </body>
 </html>

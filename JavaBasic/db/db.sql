@@ -106,7 +106,7 @@ select * from memo;
 delete from memo where name is not null;
 create sequence memoseq;
 select memoseq.nextval from dual;
-insert into memo values(memoseq.nextval, '카다도가미', 10);
+insert into memo values(memoseq.nextval, '카미', 10);
 
 
 
