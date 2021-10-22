@@ -2,7 +2,7 @@ package dao;
 
 public class Sql {
 	
-	//Customer 테이블
+		//Customer 테이블
 		public static final String CUSTOMER_INSERT_SQL 
 			= "insert into customer values(customerseq.nextval, ?, ?, ?, ?, ?, ?, ?, ?)";
 		
@@ -31,9 +31,10 @@ public class Sql {
 		public static final String BOARD_UPDATE_SQL 
 			= "update bbs set subject = ?, content = ? where no = ?";
 		
+		public static final String BOARD_DELETE_SQL 
+		= "delete from bbs where no = ?";
+		
 		public static final String BOARD_CNT_UPDATE_SQL 
 			= "update bbs set cnt = ? where no = ?";
 		
-		public static final String BOARD_DELETE_SQL 
-			= "delete from bbs where no = ?";
 }
