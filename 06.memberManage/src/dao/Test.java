@@ -21,7 +21,7 @@ public class Test {
 //		System.out.println(dao.selectCntById("bbq"));
 //		System.out.println(dao.loging("bbq", "123"));
 
-		boardDao.insert(board);
+//		boardDao.insert(board);
 	}
 
 }

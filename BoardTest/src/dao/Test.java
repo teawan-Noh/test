@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 
 import model.Board;
@@ -14,13 +15,20 @@ public class Test {
 		
 		BoardDao boardDao = new BoardDaoImpl();
 		
-		String subject = "abc";
-		String content = "content";
-		String id = "id";
+//		String subject = "abc";
+//		String content = "content";
+//		String id = "id";
+//		
+//		Board board = new Board(subject, content, id);
+//
+//		boardDao.insert(board);
 		
-		Board board = new Board(subject, content, id);
-
-		boardDao.insert(board);
+		List<Board> list = boardDao.selectAll();
+		
+		for (Board board : list) {
+			System.out.println(board);
+		}
+		
 	}
 
 }
