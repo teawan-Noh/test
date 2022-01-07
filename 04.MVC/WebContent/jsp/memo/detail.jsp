@@ -21,7 +21,7 @@
 		이름 : <input type="text" name="name" value="${memodetail.name}"/>
 		나이 : <input type="text" name="age" value="${memodetail.age}"/>
 		<input type="submit" value="수정"/>
-	</form>
+		</form>
 	<a href="memo_delete?memoid=${memodetail.memoid}">삭제</a>
 </div>
 </body>

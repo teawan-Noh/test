@@ -32,7 +32,7 @@ public class Sql {
 			= "update bbs set subject = ?, content = ? where no = ?";
 		
 		public static final String BOARD_DELETE_SQL 
-		= "delete from bbs where no = ?";
+			= "delete from bbs where no = ?";
 		
 		public static final String BOARD_CNT_UPDATE_SQL 
 			= "update bbs set cnt = ? where no = ?";

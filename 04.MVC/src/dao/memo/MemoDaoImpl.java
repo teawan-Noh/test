@@ -3,6 +3,7 @@ package dao.memo;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -104,7 +105,7 @@ public class MemoDaoImpl implements MemoDao{
 				memoList.add(memo);
 			}
 			
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			e.getStackTrace();
 		} finally {
 			JDBCUtil.close(resultSet, pStatement, connection);

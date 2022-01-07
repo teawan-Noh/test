@@ -2,7 +2,6 @@
 select * 
 from ALL_TAB_COLUMNS
 where TABLE_NAME = 'CUSTOMER' ;
-DROP table customer
 
 create table customer(
 	customerseq Number,
